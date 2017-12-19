@@ -271,6 +271,41 @@ will appear as they should using Lucida (other than the Symbols), but code page
 will influence them when using a raster font (but of particular interest, 437
 and 850 both show the Box Drawings).
 
+## Building
+Install Microsoft Visual Studio Community 2017
+
+Within the Visual Studio IDE, run `Tools -> Visual Studio Command Prompt`. 
+
+__Important!__ Ensure you have uninstalled ansicon (`ansicon -u` from whatever folder you installed it from previously).
+
+Clone this repo, open a command prompt, and chdir to its root directory.
+
+If you used the default install directories, the shortcuts for the various command prompts should be found in:
+`C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio 2017\Visual Studio Tools\VC`. For simplicity, choose the command prompt for your native architecture (x86 or x64).
+
+For example, if you are using Windows x64:
+
+  - Set it: `"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"`
+
+  - Clean it: `nmake /f makefile.vc clean`
+
+  - Build it: `nmake /f makefile.vc /e BITS=64`
+
+  - Output is in the `x64` folder.
+
+  - Run it: `x64\ansicon.exe /?`
+
+If you are using Windows x86:
+
+  - Set it: `"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"`
+
+  - Clean it: `nmake /f makefile.vc clean`
+
+  - Build it: `nmake /f makefile.vc /e BITS=32`
+
+  - Run it: `x86\ansicon.exe /?`
+
+(Note: this should work with previous versions of Visual Studio as well.)
 
 ## Acknowledgments
 

@@ -24,19 +24,25 @@
 
 !IFNDEF BITS
 !IF "$(CPU)" == "AMD64" || "$(PLATFORM)" == "x64" || "$(PLATFORM)" == "X64"
+#!ERROR HEY! $(CPU) $(PLATFORM)
 BITS = 64
 !ELSE
 BITS = 32
 !ENDIF
+#!ELSE
+#!ERROR HEY! $(CPU) $(PLATFORM)
 !ENDIF
 
-!IF $(BITS) == 32
+!IF "$(BITS)" == "32"
+#!ERROR SETUP = / $(CPU) / $(PLATFORM) / $(PROCESSOR_ARCHITECTURE) /
 DIR = x86
 !ELSE
-!IF $(BITS) == 64
+!IF "$(BITS)" == "64"
+#!ERROR SETUP = / $(CPU) / $(PLATFORM) / $(PROCESSOR_ARCHITECTURE) /
 DIR = x64
 RFLAGS = /D_WIN64
 !ELSE
+#!ERROR SETUP = / $(CPU) / $(PLATFORM) / $(PROCESSOR_ARCHITECTURE) /
 !ERROR BITS should be defined to 32 or 64.
 !ENDIF
 !ENDIF
@@ -86,12 +92,14 @@ MTmsg = @echo Embedding manifest&
 
 all: ansicon$(BITS)
 
-ansicon32: x86 x86\ansicon.exe x86\ANSI32.dll x64 x64\ANSI32.dll
+ansicon32: x86 x86\ansicon.exe x86\ANSI32.dll
 
 ansicon64: x64 x64\ansicon.exe x64\ANSI64.dll
 
 x86:
+!IF !EXISTS("x86")
 	mkdir x86
+!ENDIF
 
 x86\ansicon.exe: x86\ansicon.obj $(X86OBJS) x86\procrva.obj x86\ansicon.res
 	$(LDmsg)$(CC) /nologo $(SHARE) /Fe$@ $** $(LIBS) $(LINK) /filealign:512
@@ -109,7 +117,9 @@ x86\ANSI32.dll: x86\ANSI.obj $(X86OBJS) x86\ansi.res
 !ENDIF
 
 x64:
+!IF !EXISTS("x64")
 	mkdir x64
+!ENDIF
 
 x64\ansicon.exe: x64\ansicon.obj $(X64OBJS) x64\ansicon.res
 	$(LDmsg)$(CC) /nologo $(SHARE) /Fe$@ $** $(LIBS) $(LINK)
